@@ -84,11 +84,10 @@
         white-space: nowrap;       /* Prevent text from wrapping */
         overflow: hidden;         /* Hide the overflow */
         text-overflow: ellipsis;  /* Display an ellipsis when text overflows */
-        max-width: 47vw; 
+        max-width: 47vw;
     }
     table{
         text-align: center;
-        border-collapse: collapse;
         width: 50vw;
         margin: 0 auto;
         margin-top: 2vw;
@@ -96,6 +95,7 @@
     }
     td, th{
         border: solid 1px #ddd;
+        border-radius: 10px;
         padding: 2px;
     }
     th{
