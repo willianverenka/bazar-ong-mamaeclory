@@ -13,9 +13,6 @@ function deletarImagem(imagePath){
   fs.unlink(imagePath, (err) => {
     if(err){
       console.error("Erro ao apagar imagem:", err);}
-    else{
-      console.log("Imagem apagada com sucesso.")
-    }
   })
 }
 

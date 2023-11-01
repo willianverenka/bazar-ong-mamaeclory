@@ -4,22 +4,24 @@
     import IoIosBuild from 'svelte-icons/io/IoIosBuild.svelte'
     import GoTrashcan from 'svelte-icons/go/GoTrashcan.svelte'
     import ModalEditarPost from "../../ModalEditarPost.svelte";
+    import { erro } from "../../toasts"
+    import { checarToast } from "../../checarToasts";
     import MdAddCircleOutline from "svelte-icons/md/MdAddCircleOutline.svelte";
+    import ModalConfirmarDeletar from "../../ModalConfirmarDeletar.svelte";
     
     let showModal2 = false;
+    let showModal3 = false;
     let idSelecionado = '';
     let operacao = '';
 
     let posts = [];
     onMount(async () => {
         posts = await carregarPosts();
-        //console.log("posts", posts)
-        //console.log(localStorage.getItem("teste"))
+        checarToast();
     });
       const carregarPosts = async() => {
           const rest = await fetch(API_BASE_URL + '/posts');
           const posts = await rest.json();
-          localStorage.setItem('fetchConteudo', posts);
           return posts;
       }
 </script>
@@ -43,9 +45,6 @@
                 showModal2 = true;
                 idSelecionado = _id;
                 operacao = 'e'
-                console.log(idSelecionado)
-                console.log(titulo)
-                console.log(operacao)
             }}>
                 <div class="icon">
                     <IoIosBuild/>
@@ -53,11 +52,9 @@
             </button>
         </td>
         <td><button on:click={() => {
+            showModal3 = true;
             idSelecionado = _id;
             operacao = 'd'
-            console.log(idSelecionado)
-            console.log(operacao)
-            console.log(titulo)
         }}><div class="icon2"><GoTrashcan/></div></button></td>
     </tr>
     {/each}
@@ -68,6 +65,10 @@
 
 </ModalEditarPost>
 
+<ModalConfirmarDeletar bind:showModal3 bind:idSelecionado>
+
+</ModalConfirmarDeletar>
+
 <style>
     button{
         background-color: transparent;
@@ -75,10 +76,6 @@
     }
     button:hover{
         cursor: pointer;
-    }
-    a{
-        text-decoration: none;
-        color: inherit;
     }
     td{
         white-space: nowrap;       /* Prevent text from wrapping */
@@ -94,7 +91,7 @@
         font-family: 'Poppins', sans-serif;
     }
     td, th{
-        border: solid 1px #ddd;
+        border: solid 1px #8a8a8a;
         border-radius: 10px;
         padding: 2px;
     }
@@ -106,20 +103,21 @@
         width: 1.5rem;
         height: 1.5rem;
         margin: 0 auto;
-        background-color: rgb(255, 158, 3);
     }
     .icon:hover{
-        background-color: white;
+        color: rgb(211, 211, 24);
     }
     .icon2{
         width: 1.5rem;
         height: 1.5rem;
         margin: 0 auto;
-        background-color: rgb(255, 0, 0);
     }
     .icon2:hover{
-        background-color: white;
+        color: red;
     }
-
+    a{
+        text-decoration: none;
+        color: inherit;
+    }
 </style>
 

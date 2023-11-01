@@ -1,6 +1,7 @@
 <script>
     import { SvelteToast } from '@zerodevx/svelte-toast'
     import Navbar from '../Navbar.svelte'
+    import { sucesso, erro, aviso } from "../toasts"
 
   
     // Optionally set default options here
@@ -15,6 +16,7 @@
   theme: {},            // css var overrides
   classes: []           // user-defined classes
 }
+
   </script>
   <SvelteToast {options} />
 

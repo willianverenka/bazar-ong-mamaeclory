@@ -11,8 +11,6 @@ const cookieParser = require('cookie-parser');
 const fs = require("fs");
 const { FRONT_BASE_URL } = require('./constants')
 
-console.log(FRONT_BASE_URL);
-
 const corsOptions = {
   origin: FRONT_BASE_URL,
   credentials: true
@@ -82,7 +80,7 @@ app.post("/api/posts", helper.authenticateUser, multerUpload.single("imagem"), a
       });
       await post.save();
       helper.deletarImagem(imagem.path);
-      return res.send(post);
+      return res.status(201).send(post);
     }
     helper.deletarImagem(imagem.path);
     return res.status(500).send(response.data);
@@ -92,7 +90,6 @@ app.post("/api/posts", helper.authenticateUser, multerUpload.single("imagem"), a
 });
 
 app.put("/api/posts/:id", helper.authenticateUser, async (req, res) => {
-  console.log(req.body.titulo, req.body.valor)
   const post = await Post.findByIdAndUpdate(req.params.id, {
     titulo: req.body.titulo,
     valor: req.body.valor,
@@ -100,12 +97,15 @@ app.put("/api/posts/:id", helper.authenticateUser, async (req, res) => {
   if(!post){
     return res.status(404);
   }
-  return res.send(post);
+  return res.status(200).send(post);
 });
 
 app.delete("/api/posts/:id", helper.authenticateUser, async (req, res) => {
   const post = await Post.findByIdAndRemove(req.params.id);
-  return res.send(post);
+  if(!post){
+    return res.status(404).send();
+  }
+  return res.status(204).send();
 });
 
 // AUTH
@@ -145,6 +145,6 @@ app.post("/register", async (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
+app.listen(3000, "0.0.0.0", () => {
   console.log("Servidor rodando...");
 });

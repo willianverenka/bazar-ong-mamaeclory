@@ -12,7 +12,6 @@
 	let password : string;
 
 	const tentarLogin = async () => {
-		console.log(username, password);
 		const resposta = await fetch(API_BASE_URL + "/login", {
 			method: 'POST',
 			headers: {

@@ -1,4 +1,5 @@
 <script lang="ts">
+  	import { goto } from "$app/navigation";
 	import { API_BASE_URL } from "./constants";
     import { erro, sucesso } from "./toasts"
 	export let showModal2 : boolean; // boolean
@@ -11,7 +12,6 @@
     let valor = 0;
 
     const enviarPostEditado = async () => {
-        console.log("enviarpost", titulo, valor)
         const token = localStorage.getItem('token');
         const header = {
             'Content-Type': 'application/json',
@@ -25,18 +25,20 @@
             }),
             headers: header,
         })
-        if(resposta.ok){
-            sucesso("Post editado com sucesso! Recarregando em 3 segundos")
+        if(resposta.status === 200){
+			localStorage.setItem('toastr', JSON.stringify({ msg: "Post editado com sucesso!", tipo: "sucesso" }));
+            location.reload();
             dialog.close();
-            setTimeout(() => {
-                location.reload();
-            }, 3000)
         }
-        else{
-			// localStorage.setItem('toastr', JSON.stringify({msg: "Sua sessão expirou. Favor entrar novamente.", tipo: "erro"}));
-			// localStorage.removeItem('token');
-			// location.reload();
+        else if(resposta.status === 401){
+			localStorage.setItem('toastr', JSON.stringify({msg: "Sua sessão expirou. Favor entrar novamente.", tipo: "erro"}));
+			localStorage.removeItem('token');
+			goto('/');
         }
+		else{
+			localStorage.setItem('toastr', JSON.stringify({msg: "Erro ao editar o post.", tipo: "erro"}));
+			location.reload();
+		}
     }
 </script>
 

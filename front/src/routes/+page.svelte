@@ -6,6 +6,8 @@
   import { API_BASE_URL } from "../constants";
   import MdAddCircleOutline from "svelte-icons/md/MdAddCircleOutline.svelte";
   import IoIosColorWand from "svelte-icons/io/IoIosColorWand.svelte";
+  import { checarToast } from "../checarToasts";
+  import MdPerson from 'svelte-icons/md/MdPerson.svelte'
 
   let isAuthenticated = false;
   let showModal = false;
@@ -13,27 +15,9 @@
   let posts = [];
   onMount(async () => {
     posts = await carregarPosts();
-    localStorage.setItem("teste", JSON.stringify(posts));
-    //console.log("posts", posts)
-    //console.log(localStorage.getItem("teste"))
+    checarToast();
     if (localStorage.getItem("token")) {
       isAuthenticated = true;
-    }
-    const toastr = localStorage.getItem("toastr");
-    if (toastr) {
-      const { msg, tipo } = JSON.parse(toastr);
-      switch (tipo) {
-        case "sucesso":
-          sucesso(msg);
-          break;
-        case "erro":
-          erro(msg);
-          break;
-        case "aviso":
-          aviso(msg);
-          break;
-      }
-      localStorage.removeItem("toastr");
     }
   });
 
@@ -62,7 +46,9 @@
 {/if}
 
 {#if !isAuthenticated}
-  <button on:click={() => (showModal = true)}> ENTRAR </button>
+  <div class="cont">
+    <button id="botao" on:click={() => (showModal = true)}><div class="icon"><MdPerson /></div> ENTRAR </button>
+  </div>
   <ModalLogin bind:showModal />
 {/if}
 
@@ -82,11 +68,11 @@
   </div>
 {/await}
 
+{#if posts.length == 0}
+<p id="text">Nada a mostrar... por enquanto.</p>
+{/if}
+
 <style>
-  :global(a) {
-    color: inherit; 
-    text-decoration: none;
-  }
   :global(body) {
     margin: 0;
   }
@@ -172,5 +158,14 @@
     padding: 8px;
     margin: 1rem 2rem;
     font-size: 1.3rem;
+  }
+  #text{
+    text-align: center;
+    color: rgb(118, 118, 118);
+    margin-top: 15vh;
+  }
+  :global(a) {
+    color: inherit; 
+    text-decoration: none;
   }
 </style>

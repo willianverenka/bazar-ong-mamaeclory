@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { API_BASE_URL } from "./constants";
+	import { goto } from "$app/navigation";
 
 	export let showModal2 : boolean; // boolean
 
@@ -20,22 +21,24 @@
         formData.append('titulo', titulo);
         formData.append('valor', valor);
         formData.append('imagem', files[0]);
-        console.log(formData);
-        console.log(files[0]);
         const resposta = await fetch(API_BASE_URL + "/posts", {
             method: 'POST',
             body: formData,
             headers: header,
         })
-        if(resposta.ok){
+        if(resposta.status === 201){
             localStorage.setItem('toastr', JSON.stringify({ msg: "Post criado com sucesso!", tipo: "sucesso" }));
             location.reload();
         }
-        else{
+        else if(resposta.status === 401){
 			localStorage.setItem('toastr', JSON.stringify({msg: "Sua sessão expirou. Favor entrar novamente.", tipo: "erro"}));
 			localStorage.removeItem('token');
 			location.reload();
-        }
+		}
+		else{
+			localStorage.setItem('toastr', JSON.stringify({msg: "Erro ao criar o post.", tipo: "erro"}));
+			location.reload();
+		}
     }
 </script>
 
