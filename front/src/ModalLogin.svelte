@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { erro } from "./toasts"
-	import { API_BASE_URL } from "./constants";
 
 	export let showModal : boolean; // boolean
 
@@ -12,7 +11,7 @@
 	let password : string;
 
 	const tentarLogin = async () => {
-		const resposta = await fetch(API_BASE_URL + "/login", {
+		const resposta = await fetch("https://bazar-mamaeclory.fly.dev/api" + "/login", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

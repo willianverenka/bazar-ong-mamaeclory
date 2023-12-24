@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { API_BASE_URL } from "./constants";
-	import { goto } from "$app/navigation";
 
 	export let showModal2 : boolean; // boolean
 
@@ -21,7 +19,7 @@
         formData.append('titulo', titulo);
         formData.append('valor', valor);
         formData.append('imagem', files[0]);
-        const resposta = await fetch(API_BASE_URL + "/posts", {
+        const resposta = await fetch("https://bazar-mamaeclory.fly.dev/api" + "/posts", {
             method: 'POST',
             body: formData,
             headers: header,

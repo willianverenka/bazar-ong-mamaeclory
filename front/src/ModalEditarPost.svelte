@@ -1,7 +1,5 @@
 <script lang="ts">
   	import { goto } from "$app/navigation";
-	import { API_BASE_URL } from "./constants";
-    import { erro, sucesso } from "./toasts"
 	export let showModal2 : boolean; // boolean
     export let idSelecionado : string;
 
@@ -17,7 +15,7 @@
             'Content-Type': 'application/json',
             authorization: `Bearer ${token}`
         }
-        const resposta = await fetch(API_BASE_URL + "/posts/" + idSelecionado, {
+        const resposta = await fetch("https://bazar-mamaeclory.fly.dev/api" + "/posts/" + idSelecionado, {
             method: 'PUT',
             body: JSON.stringify({
                 titulo: titulo,

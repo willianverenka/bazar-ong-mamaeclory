@@ -13,7 +13,7 @@
         const header = {
             authorization: `Bearer ${token}`
         }
-        const resposta = await fetch(API_BASE_URL + "/posts/" + idSelecionado, {
+        const resposta = await fetch("https://bazar-mamaeclory.fly.dev/api" + "/posts/" + idSelecionado, {
             method: 'DELETE',
             headers: header,
         })

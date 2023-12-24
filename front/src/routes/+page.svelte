@@ -1,9 +1,10 @@
+<svelte:head>
+    <title>Bazar</title>
+</svelte:head>
 <script>
   import { onMount } from "svelte";
   import ModalCriarPost from "../ModalCriarPost.svelte";
   import ModalLogin from "../ModalLogin.svelte";
-  import { sucesso, aviso, erro } from "../toasts";
-  import { API_BASE_URL } from "../constants";
   import MdAddCircleOutline from "svelte-icons/md/MdAddCircleOutline.svelte";
   import IoIosColorWand from "svelte-icons/io/IoIosColorWand.svelte";
   import { checarToast } from "../checarToasts";
@@ -22,9 +23,8 @@
   });
 
   const carregarPosts = async () => {
-    const rest = await fetch(API_BASE_URL + "/posts");
+    const rest = await fetch("https://bazar-mamaeclory.fly.dev/api" + "/posts");
     const posts = await rest.json();
-    localStorage.setItem("fetchConteudo", posts);
     return posts;
   };
 </script>
@@ -53,8 +53,11 @@
 {/if}
 
 {#await carregarPosts()}
-  <p>Carregando postagens...</p>
+  <p id="text">Carregando postagens...</p>
 {:then posts}
+{#if posts.length == 0}
+<p id="text">Nada a mostrar... por enquanto.</p>
+{/if}
   <div class="wrapper-grid">
     {#each posts as { titulo, valor, imagem_url, _id }}
       <div class="container">
@@ -68,9 +71,6 @@
   </div>
 {/await}
 
-{#if posts.length == 0}
-<p id="text">Nada a mostrar... por enquanto.</p>
-{/if}
 
 <style>
   :global(body) {

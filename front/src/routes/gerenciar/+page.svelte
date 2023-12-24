@@ -1,5 +1,8 @@
+<svelte:head>
+    <title>Gerenciar</title>
+</svelte:head>
+
 <script>
-    import { API_BASE_URL } from "../../constants";
     import { onMount } from "svelte";
     import IoIosBuild from 'svelte-icons/io/IoIosBuild.svelte'
     import GoTrashcan from 'svelte-icons/go/GoTrashcan.svelte'
@@ -20,7 +23,7 @@
         checarToast();
     });
       const carregarPosts = async() => {
-          const rest = await fetch(API_BASE_URL + '/posts');
+          const rest = await fetch("https://bazar-mamaeclory.fly.dev/api" + '/posts');
           const posts = await rest.json();
           return posts;
       }
